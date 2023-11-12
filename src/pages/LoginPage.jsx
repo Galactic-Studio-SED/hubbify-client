@@ -1,6 +1,6 @@
 import React from "react";
 import Input from "../components/Input";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -14,21 +14,18 @@ const LoginPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log("LOGIN")
-    toast.warn("aSSS", {
-      toastId: "warning",
-    });
-    // /*if (true) {
-    //   navigateTo("/");
-    // }*/
+    if (true) {
+      navigateTo("/");
+    }
   };
 
-  // When the form is submitted, but there are errors
   const onInvalid = () => {
-    console.log("eRROE")
-    toast.warn("Revisa bien tus datos e intenta de nuevo, por favor", {
-      toastId: "warning",
-    });
+    toast.warn(
+      "Double-check your information and give it another try, please.",
+      {
+        toastId: "warning",
+      }
+    );
   };
 
   return (
@@ -42,9 +39,9 @@ const LoginPage = () => {
             >
               hubbify
             </a>
-            <h1 className="font-semibold mt-6">Create your account</h1>
+            <h1 className="font-semibold mt-6">Sign In to your account</h1>
             <p className="font-medium text-text-quaternary">
-              Let’s get started
+              Welcome back to hubbify
             </p>
           </div>
 
@@ -52,8 +49,6 @@ const LoginPage = () => {
             onSubmit={handleSubmit(onSubmit, onInvalid)}
             className="flex flex-col gap-10"
           >
-            {/* <form onSubmit={handleSubmit((data) => setData(JSON.stringify(data)))}> */}
-    
             <div>
               <label htmlFor="email" className="font-semibold">
                 <span>Email</span>
@@ -68,20 +63,24 @@ const LoginPage = () => {
                   ...register("email", {
                     required: true,
                     pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
+                    maxLength: 200,
                   }),
                 }}
                 validation={errors.email}
                 placeholder={"e.g. hellotravelgo@hotmail.com"}
                 type={"email"}
               >
-                {errors.email?.type === "required" && (
-                  <span role="alert" className="ml-4 font-semibold text-red-400">
-                    ¡Hey! Este campo es requerido
-                  </span>
-                )}
-                {errors.email?.type === "pattern" && (
-                  <span role="alert" className="ml-4 font-semibold text-red-400">
-                    Por favor, ingresa un correo electrónico válido
+                {errors.email && (
+                  <span
+                    className="ml-4 font-semibold text-red-400"
+                    role="alert"
+                  >
+                    {errors.email.type === "required" &&
+                      "This field is required."}
+                    {errors.email.type === "pattern" &&
+                      "Please enter a valid email address."}
+                    {errors.email.type === "maxLength" &&
+                      "Email must not exceed 200 characters."}
                   </span>
                 )}
               </Input>
@@ -92,19 +91,28 @@ const LoginPage = () => {
                 <span>Password</span>
                 <span className="text-royal-purple ml-2">*</span>
               </label>
+
               <Input
                 id={"password"}
                 name={"password"}
                 aria-invalid={errors.password ? "true" : "false"}
-                innerRef={{ ...register("password", { required: true }) }}
+                innerRef={{
+                  ...register("password", { required: true, minLength: 8 }),
+                }}
                 validation={errors.password}
                 placeholder={"**********"}
                 type={"password"}
                 autoComplete={"off"}
               >
-                {errors.password?.type === "required" && (
-                  <span role="alert" className="ml-4 font-semibold text-red-400">
-                    ¡Hey! Este campo es requerido
+                {errors.password && (
+                  <span
+                    className="ml-4 font-semibold text-red-400"
+                    role="alert"
+                  >
+                    {errors.password.type === "required" &&
+                      "This field is required."}
+                    {errors.password.type === "minLength" &&
+                      "Password length should be at least 8 characters."}
                   </span>
                 )}
               </Input>
@@ -114,44 +122,19 @@ const LoginPage = () => {
               type="submit"
               className="rounded-full font-medium bg-black flex flex-row items-center justify-center py-2.5 px-4 text-white w-full"
             >
-              Sign Up
+              Sign In
             </button>
 
             <div className="text-gray-500 text-end">
-              <span className="font-medium">Already have an account? </span>
-              <span className="font-semibold text-royal-purple">Log in</span>
+              <span className="font-medium">Don’t have an account? </span>
+              <Link
+                to={"/register"}
+                className="font-semibold text-royal-purple"
+              >
+                Create account
+              </Link>
             </div>
           </form>
-
-          {/* <div className="flex flex-col items-start justify-center gap-2">
-            <div className="font-semibold">
-              <span>Name</span>
-              <span className="text-royal-purple ml-2">*</span>
-            </div>
-
-            <input
-              className="border-gray-400 py-2.5 px-4 border rounded-full w-full"
-              id="email"
-              name="email"
-              placeholder="Enter you name"
-              type="email"
-            />
-          </div> */}
-
-          {/* <div className="flex flex-col items-start justify-center gap-2">
-            <div className="font-semibold">
-              <span>Password</span>
-              <span className="text-royal-purple ml-2">*</span>
-            </div>
-
-            <input
-              className="border-gray-400 py-2.5 px-4 border rounded-full w-full"
-              id="password"
-              name="password"
-              placeholder="*********"
-              type="password"
-            />
-          </div> */}
         </div>
       </div>
       <div className="h-full w-full bg-gray-400"></div>

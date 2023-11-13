@@ -9,11 +9,11 @@ const Navbar = () => {
   };
 
   return (
-    <div className='flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white  bg-black'>
-      <h1 className='w-full text-3xl font-bold'>hubbify.</h1>
-      <ul className='hidden md:flex'>
-        <li className='p-4'>Log In</li>
-        <li className='p-4'>Sign Up</li>
+    <div className='flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white bg-black'>
+      <h1 className='w-1/2 text-3xl font-bold'>hubbify.</h1>
+      <ul className='hidden md:flex w-1/3 ' >
+        <li className='p-3'>Log In</li>
+        <li><button className='bg-royal-purple text-white w-[140px] h-auto rounded-md font-medium  ml-4 p-3'>Sign Up</button></li>
       </ul>
       <div onClick={handleNav} className='block md:hidden'>
           {nav ? <AiOutlineClose size={20}/> : <AiOutlineMenu size={20} />}

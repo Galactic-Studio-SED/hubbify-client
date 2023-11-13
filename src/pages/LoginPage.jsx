@@ -67,7 +67,7 @@ const LoginPage = () => {
                   }),
                 }}
                 validation={errors.email}
-                placeholder={"e.g. hellotravelgo@hotmail.com"}
+                placeholder={"e.g. hello@example.com"}
                 type={"email"}
               >
                 {errors.email && (
@@ -120,7 +120,7 @@ const LoginPage = () => {
 
             <button
               type="submit"
-              className="rounded-full font-medium bg-black flex flex-row items-center justify-center py-2.5 px-4 text-white w-full"
+              className="rounded-full font-medium bg-black py-2.5 px-4 text-white w-full"
             >
               Sign In
             </button>

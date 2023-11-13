@@ -254,7 +254,7 @@ const RegisterPage = () => {
 
             <button
               type="submit"
-              className="rounded-full font-medium bg-black flex flex-row items-center justify-center py-2.5 px-4 text-white w-full"
+              className="rounded-full font-medium bg-black py-2.5 px-4 text-white w-full"
             >
               Sign Up
             </button>

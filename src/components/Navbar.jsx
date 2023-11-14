@@ -13,7 +13,7 @@ const Navbar = () => {
       <h1 className='w-1/2 text-3xl font-bold'>hubbify.</h1>
       <ul className='hidden md:flex ' >
         <li className='p-3'>Log In</li>
-        <li><button className='bg-royal-purple text-white w-full h-auto rounded-md font-medium p-3 hover:bg-banana-gold '>Sign Up</button></li>
+        <li><button className='bg-royal-purple text-white w-full h-auto rounded-md font-medium p-3 hover:bg-indigo-400 duration-500'>Sign Up</button></li>
       </ul>
       <div onClick={handleNav} className='block md:hidden'>
           {nav ? <AiOutlineClose size={20}/> : <AiOutlineMenu size={20} />}

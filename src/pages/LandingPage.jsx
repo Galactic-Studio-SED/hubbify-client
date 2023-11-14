@@ -1,10 +1,19 @@
 import React from "react";
+import Nabvar from "../components/Navbar";
+import Hero from "../components/Hero"
 
 const LandingPage = () => {
     return (
-      <div>LandingPage
+      <div>
+
+      <div><Nabvar/></div>
+      <div><Hero/></div>
+      
       </div>
+
+      
+
     )
   }
   
-  export default LandingPage
+  export default LandingPage;

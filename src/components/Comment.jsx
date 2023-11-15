@@ -30,18 +30,8 @@ const Comment = ({
       "¿Estás seguro de borrar el comentario?"
     );
     if (confirmDelete) {
-      try {
-        const response = axiosPrivate.delete(`/comments/own/${id}`);
-
-        toast.success("Comment deleted successfully.", {
-          toastId: "success",
-        });
-
-        // Call the onDelete function to update the state in the parent component
-        onDelete(id);
-      } catch (error) {
-        console.log(error.message);
-      }
+      // Call the onDelete function to update the state in the parent component
+      onDelete(id);
     }
   };
 

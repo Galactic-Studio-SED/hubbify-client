@@ -3,6 +3,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import UsersPage from "./pages/UsersPage.jsx";
 import Unauthorized from "./pages/Unauthorized.jsx";
 import RequireLogin from "./components/RequireLogin.jsx";
 import RequireAuth from "./components/RequireAuth";
@@ -31,8 +32,8 @@ function App() {
       </Route>
 
       {/* private routes */}
-      <Route element={<RequireAuth roles={[ROLES.ADMIN]} />}>
-        <Route path="/users" element={<div>Users</div>} />
+      <Route element={<RequireAuth roles={[ROLES.ADMIN, ROLES.SUPER_ADMIN]} />}>
+        <Route path="/users" element={<UsersPage />} />
       </Route>
 
       {/* not found route */}

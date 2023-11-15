@@ -12,8 +12,6 @@ const ProfilePage = () => {
   const axiosPrivate = useAxiosPrivate();
   const [isEditing, setIsEditing] = useState(false);
 
-  console.log("AUTH ", auth);
-
   const roles = Array.isArray(auth.roles)
     ? auth.roles.map((role) => mapRoleToLabel(role))
     : [mapRoleToLabel(auth.roles)];
@@ -27,7 +25,7 @@ const ProfilePage = () => {
       case import.meta.env.VITE_SUPER_ADMIN_ROLE:
         return "Superadministrador";
       default:
-        return role; // O devuelve el role sin cambios si no es reconocido
+        return role;
     }
   }
 
@@ -49,10 +47,9 @@ const ProfilePage = () => {
         });
 
         setUser(response.data.data[0]);
-        console.log(response.data.data[0]);
       } catch (error) {
         console.log(error);
-        toast.error("Login failed. Please try again.", {
+        toast.error("Error while fetching profile. Please try again.", {
           toastId: "error",
         });
       }

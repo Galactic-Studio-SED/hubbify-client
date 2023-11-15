@@ -102,10 +102,10 @@ const Comment = ({
           {auth && auth.id === userId && (
             <div className="grid grid-cols-2 gap-2 ml-auto">
               <button onClick={handleDelete} className="text-red-500">
-                Borrar
+                Delete
               </button>
               <button onClick={handleEdit} className="text-royal-purple">
-                Modificar
+                Edit
               </button>
             </div>
           )}

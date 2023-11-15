@@ -23,6 +23,7 @@ const RegisterPage = () => {
           username: data.username,
           email: data.email,
           password: data.password,
+          phone: data.phone,
         }),
         {
           headers: {
@@ -38,7 +39,7 @@ const RegisterPage = () => {
 
       navigateTo("/login");
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
       toast.error("Registration failed. Please try again.", {
         toastId: "error",
       });

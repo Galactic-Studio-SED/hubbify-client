@@ -85,7 +85,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="bg-gray-100 min-h-creen">
+      <div className="bg-gray-100 min-h-screen">
         <Header />
         <div className="mt-3 max-w-[1440px] px-8 mx-auto">
           <CommentInput setComments={setComments} />

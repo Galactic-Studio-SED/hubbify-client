@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 
+const bearer = import.meta.env.VITE_BEARER_TOKEN;
+
 const useAxiosPrivate = () => {
   const { refresh } = useRefreshToken();
   const { auth } = useAuth();
@@ -10,7 +12,7 @@ const useAxiosPrivate = () => {
   useEffect(() => {
     const requestInterceptor = axiosPrivate.interceptors.request.use(
       (config) => {
-        config.headers.Authorization = `Bearer ${auth.accessToken}`;
+        config.headers.Authorization = `${bearer} ${auth.accessToken}`;
         return config;
       },
       (error) => {
@@ -31,7 +33,7 @@ const useAxiosPrivate = () => {
           const accessToken = await refresh();
 
           axiosPrivate.defaults.headers.common["Authorization"] =
-            "Bearer " + accessToken;
+            `${bearer} ` + accessToken;
 
           return axiosPrivate(originalRequest);
         }

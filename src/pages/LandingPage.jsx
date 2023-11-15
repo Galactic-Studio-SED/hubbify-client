@@ -4,7 +4,7 @@ import Hero from "../components/Hero"
 
 const LandingPage = () => {
     return (
-      <div className="bg-hero-bg">
+      <div className="bg-hero-bg bg-center bg-cover bg-no-repeat">
 
       <div><Nabvar/></div>
       <div><Hero/></div>

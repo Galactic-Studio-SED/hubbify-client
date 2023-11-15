@@ -3,6 +3,7 @@ import Input from "../components/Input";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import axios from "../api/axios";
 
 const RegisterPage = () => {
   const navigateTo = useNavigate();
@@ -15,11 +16,33 @@ const RegisterPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    toast.success("Registration successful! You can now log in.", {
-      toastId: "success",
-    });
-    navigateTo("/login");
+    try {
+      const response = await axios.post(
+        "/users",
+        JSON.stringify({
+          username: data.username,
+          email: data.email,
+          password: data.password,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            withCredentials: true,
+          },
+        }
+      );
+
+      toast.success("Registration successful! You can now log in.", {
+        toastId: "success",
+      });
+
+      navigateTo("/login");
+    } catch (error) {
+      console.log(error);
+      toast.error("Registration failed. Please try again.", {
+        toastId: "error",
+      });
+    }
   };
 
   const onInvalid = () => {

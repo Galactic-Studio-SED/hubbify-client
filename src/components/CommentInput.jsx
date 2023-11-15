@@ -1,15 +1,43 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-const CommentInput = () => {
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAuth from "../hooks/useAuth";
+
+const CommentInput = ({ setComments }) => {
+  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data) => {
+    try {
+      const response = await axiosPrivate.post(
+        "/comments/own",
+        JSON.stringify({
+          content: data.comment,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            withCredentials: true,
+          },
+        }
+      );
+
+      setComments((prev) => [response.data.data, ...prev]);
+
+      toast.success("Comment sent successfully.", {
+        toastId: "success",
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   const onInvalid = () => {
     toast.warn("try again, please.", {

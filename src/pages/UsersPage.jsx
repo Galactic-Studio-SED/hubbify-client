@@ -2,16 +2,11 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import Header from "../containers/Header";
-import { useForm } from "react-hook-form";
-import Input from "../components/Input";
-import useAuth from "../hooks/useAuth";
 import User from "../components/User";
 
 const UsersPage = () => {
-  const { auth } = useAuth();
   const [users, setUsers] = useState();
   const axiosPrivate = useAxiosPrivate();
-  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController(); // To cancel the fetch request
@@ -42,8 +37,37 @@ const UsersPage = () => {
         toastId: "success",
       });
 
-      // Call the onDelete function to update the state in the parent component
       setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleUpgradeUser = (id) => {
+    try {
+      const response = axiosPrivate.put(`/users/upgrade/${id}`);
+
+      /* const response = axiosPrivate.put(`/users/${id}`, {
+        roles: ["ADMINISTRATOR"],
+      });*/
+
+      toast.success("User upgraded successfully.", {
+        toastId: "success",
+      });
+
+      setUsers(
+        users.map((user) => {
+          if (user.id === id) {
+            console.log(user);
+            return {
+              ...user,
+              role: [import.meta.env.VITE_ADMIN_ROLE],
+            };
+          }
+
+          return user;
+        })
+      );
     } catch (error) {
       console.log(error.message);
     }
@@ -68,7 +92,9 @@ const UsersPage = () => {
               birthdate={user.birthdate}
               email={user.email}
               phone={user.phone}
+              roles={user.role}
               onDelete={handleDeleteUser}
+              onUpgrade={handleUpgradeUser}
             />
           ))}
         </div>

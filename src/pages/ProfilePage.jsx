@@ -5,6 +5,7 @@ import Header from "../containers/Header";
 import { useForm } from "react-hook-form";
 import Input from "../components/Input";
 import useAuth from "../hooks/useAuth";
+import validatePassword from "../utils/ValidatePassword";
 
 const ProfilePage = () => {
   const { auth } = useAuth();
@@ -315,7 +316,10 @@ const ProfilePage = () => {
                     name={"password"}
                     aria-invalid={errors.password ? "true" : "false"}
                     innerRef={{
-                      ...register("password", { required: true, minLength: 8 }),
+                      ...register("password", {
+                        required: true,
+                        validate: validatePassword,
+                      }),
                     }}
                     validation={errors.password}
                     placeholder={"**********"}
@@ -327,10 +331,9 @@ const ProfilePage = () => {
                         className="ml-4 font-semibold text-red-400"
                         role="alert"
                       >
-                        {errors.password.type === "required" &&
-                          "This field is required."}
-                        {errors.password.type === "minLength" &&
-                          "Password length should be at least 8 characters."}
+                        {errors.password.type === "required"
+                          ? "This field is required."
+                          : errors.password.message}
                       </span>
                     )}
                   </Input>

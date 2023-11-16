@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
+import validatePassword from "../utils/ValidatePassword";
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -130,7 +131,10 @@ const LoginPage = () => {
                 name={"password"}
                 aria-invalid={errors.password ? "true" : "false"}
                 innerRef={{
-                  ...register("password", { required: true, minLength: 8 }),
+                  ...register("password", {
+                    required: true,
+                    validate: validatePassword,
+                  }),
                 }}
                 validation={errors.password}
                 placeholder={"**********"}
@@ -142,10 +146,9 @@ const LoginPage = () => {
                     className="ml-4 font-semibold text-red-400"
                     role="alert"
                   >
-                    {errors.password.type === "required" &&
-                      "This field is required."}
-                    {errors.password.type === "minLength" &&
-                      "Password length should be at least 8 characters."}
+                    {errors.password.type === "required"
+                      ? "This field is required."
+                      : errors.password.message}
                   </span>
                 )}
               </Input>

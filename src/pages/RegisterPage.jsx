@@ -1,9 +1,9 @@
-import React from "react";
 import Input from "../components/Input";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "../api/axios";
+import validatePassword from "../utils/ValidatePassword";
 
 const RegisterPage = () => {
   const navigateTo = useNavigate();
@@ -216,7 +216,10 @@ const RegisterPage = () => {
                 name={"password"}
                 aria-invalid={errors.password ? "true" : "false"}
                 innerRef={{
-                  ...register("password", { required: true, minLength: 8 }),
+                  ...register("password", {
+                    required: true,
+                    validate: validatePassword,
+                  }),
                 }}
                 validation={errors.password}
                 placeholder={"**********"}
@@ -228,10 +231,9 @@ const RegisterPage = () => {
                     className="ml-4 font-semibold text-red-400"
                     role="alert"
                   >
-                    {errors.password.type === "required" &&
-                      "This field is required."}
-                    {errors.password.type === "minLength" &&
-                      "Password length should be at least 8 characters."}
+                    {errors.password.type === "required"
+                      ? "This field is required."
+                      : errors.password.message}
                   </span>
                 )}
               </Input>

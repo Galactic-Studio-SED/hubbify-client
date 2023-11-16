@@ -27,7 +27,8 @@ const useAxiosPrivate = () => {
       async (error) => {
         const originalRequest = error.config;
 
-        if (error.response.status === 401 && !originalRequest._retry) {
+        console.log("Async error", error)
+        if (error?.response?.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
 
           const accessToken = await refresh();

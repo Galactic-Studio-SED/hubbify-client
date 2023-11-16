@@ -49,8 +49,9 @@ const ProfilePage = () => {
 
         setUser(response.data.data[0]);
       } catch (error) {
-        console.log(error);
-        toast.error("Error while fetching profile. Please try again.", {
+        const messageError = error.response?.data?.message || "";
+        console.log(messageError);
+        toast.error("Error while fetching profile. " + messageError, {
           toastId: "error",
         });
       }
@@ -101,7 +102,12 @@ const ProfilePage = () => {
       console.log("BBBB ", response.data.data);
       handleSaveEdit(response.data.data);
     } catch (error) {
-      console.log(error.message);
+      const messageError = error.response?.data?.message || "";
+      console.log(messageError);
+      toast.error("Error while updating profile. " + messageError, {
+        toastId: "error",
+      });
+      
     }
   };
 

@@ -19,8 +19,9 @@ const UsersPage = () => {
 
         setUsers(response.data.data);
       } catch (error) {
-        console.log(error);
-        toast.error("Error while fetching users. Please try again.", {
+        const messageError = error.response?.data?.message || "";
+        console.log(messageError);
+        toast.error("Error while fetching users. " + messageError, {
           toastId: "error",
         });
       }
@@ -39,7 +40,11 @@ const UsersPage = () => {
 
       setUsers(users.filter((user) => user.id !== id));
     } catch (error) {
-      console.log(error.message);
+      const messageError = error.response?.data?.message || "";
+      console.log(messageError);
+      toast.error("Error while deleting user. " + messageError, {
+        toastId: "error",
+      });
     }
   };
 
@@ -69,7 +74,12 @@ const UsersPage = () => {
         })
       );
     } catch (error) {
-      console.log(error.message);
+
+      const messageError = error.response?.data?.message || "";
+      console.log(messageError);
+      toast.error("Error while upgrading user. " + messageError, {
+        toastId: "error",
+      });
     }
   };
 

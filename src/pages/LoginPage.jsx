@@ -45,8 +45,9 @@ const LoginPage = () => {
 
       navigateTo(from, { replace: true });
     } catch (error) {
-      console.log(error?.message || error);
-      toast.error("Login failed. Please try again.", {
+      const messageError = error.response?.data?.message || "";
+      console.log(messageError);
+      toast.error("Login failed. " + messageError, {
         toastId: "error",
       });
     }

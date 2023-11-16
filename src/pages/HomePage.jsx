@@ -26,7 +26,14 @@ const HomePage = () => {
           setComments(response.data.data);
         }
       } catch (error) {
-        console.log(error.message);
+        const messageError = error.response?.data?.message;
+        if (messageError) {
+          console.log(messageError);
+          toast.error("Error while fetching comments. " + messageError, {
+            toastId: "error",
+          });
+        }
+
         //navigate('/login', { state: { from: location }, replace: true });
       }
     };
@@ -51,7 +58,7 @@ const HomePage = () => {
 
   const handleDeleteComment = (commentId) => {
     try {
-      const response = axiosPrivate.delete(`/comments/own/${id}`);
+      const response = axiosPrivate.delete(`/comments/own/${commentId}`);
 
       toast.success("Comment deleted successfully.", {
         toastId: "success",
@@ -61,7 +68,11 @@ const HomePage = () => {
         prevComments.filter((comment) => comment.comment_id !== commentId)
       );
     } catch (error) {
-      console.log(error.message);
+      const messageError = error.response?.data?.message || "";
+      console.log(messageError);
+      toast.error("Error while deleting comment. " + messageError, {
+        toastId: "error",
+      });
     }
   };
 

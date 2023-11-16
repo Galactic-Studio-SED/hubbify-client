@@ -72,7 +72,11 @@ const Comment = ({
 
       handleSaveEdit();
     } catch (error) {
-      console.log(error.message);
+      const messageError = error.response?.data?.message || "";
+      console.log(messageError);
+      toast.error("Error while updating comment. " + messageError, {
+        toastId: "error",
+      });
     }
   };
 
@@ -116,7 +120,7 @@ const Comment = ({
                 aria-invalid={errors.comment ? "true" : "false"}
                 {...register("comment", {
                   required: true,
-                  maxLength: 300,
+                  maxLength: 255,
                 })}
                 placeholder={"Share your thoughts or a post"}
                 type={"text"}
@@ -130,7 +134,7 @@ const Comment = ({
                   {errors.comment.type === "required" &&
                     "This field is required."}
                   {errors.comment.type === "maxLength" &&
-                    "Comment must not exceed 500 characters."}
+                    "Comment must not exceed 255 characters."}
                 </span>
               )}
             </div>
@@ -152,7 +156,7 @@ const Comment = ({
           </form>
         ) : (
           <div className="text-justify text--deep-dark">
-            <p className="font-medium">{content}</p>
+            <p className="font-medium break-all">{content}</p>
           </div>
         )}
       </div>

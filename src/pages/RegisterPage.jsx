@@ -39,10 +39,21 @@ const RegisterPage = () => {
 
       navigateTo("/login");
     } catch (error) {
-      console.log(error.message);
-      toast.error("Registration failed. Please try again.", {
-        toastId: "error",
-      });
+      const messageError = error.response?.data?.message || "";
+      console.log(messageError);
+
+      const code = error.response?.data?.data?.code;
+
+      if (code && code === "ER_DUP_ENTRY") {
+        toast.error("Registration failed. Duplicated data from another user" + messageError, {
+          toastId: "error",
+        });
+      } else {
+        toast.error("Registration failed. " + messageError, {
+          toastId: "error",
+        });
+      }
+     
     }
   };
 

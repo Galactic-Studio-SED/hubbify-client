@@ -7,6 +7,7 @@ export default {
         monserrat: ["Montserrat", "sans-serif"],
       },
       colors: {
+        transparent: 'transparent',
         white: "rgba(255, 255, 255, 1)",
         background: "#F2F2F2",
         "royal-purple": "rgba(86, 88, 255, 1)",
@@ -25,6 +26,10 @@ export default {
         "shadow-suspicious":
           "0px 6.755102157592773px 21.10969352722168px rgba(0, 0, 0, 0.15)",
       },
+      backgroundImage: {
+        'hero-bg': "url('../src/assets/img/hero-bg.png')",
+        
+      }
     },
   },
   plugins: [],

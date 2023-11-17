@@ -1,11 +1,15 @@
-import React from "react";
 import Input from "../components/Input";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
 
 const LoginPage = () => {
+  const { login } = useAuth();
   const navigateTo = useNavigate();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: "/" } };
 
   const {
     register,
@@ -14,8 +18,38 @@ const LoginPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    if (true) {
-      navigateTo("/");
+    try {
+      const response = await axios.post(
+        "/users/singin",
+        JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            withCredentials: true,
+          },
+        }
+      );
+
+      const accessToken = response?.data?.data?.token;
+      const roles = response?.data?.data?.roles;
+      const id = response?.data?.data?.user;
+
+      login(accessToken, roles, id);
+
+      toast.success("Login successful!", {
+        toastId: "success",
+      });
+
+      navigateTo(from, { replace: true });
+    } catch (error) {
+      const messageError = error.response?.data?.message || "";
+      console.log(messageError);
+      toast.error("Login failed. " + messageError, {
+        toastId: "error",
+      });
     }
   };
 

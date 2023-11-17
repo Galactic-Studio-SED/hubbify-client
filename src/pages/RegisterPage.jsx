@@ -1,8 +1,9 @@
-import React from "react";
 import Input from "../components/Input";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import axios from "../api/axios";
+import validatePassword from "../utils/ValidatePassword";
 
 const RegisterPage = () => {
   const navigateTo = useNavigate();
@@ -15,11 +16,45 @@ const RegisterPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    toast.success("Registration successful! You can now log in.", {
-      toastId: "success",
-    });
-    navigateTo("/login");
+    try {
+      const response = await axios.post(
+        "/users",
+        JSON.stringify({
+          username: data.username,
+          email: data.email,
+          password: data.password,
+          phone: data.phone,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            withCredentials: true,
+          },
+        }
+      );
+
+      toast.success("Registration successful! You can now log in.", {
+        toastId: "success",
+      });
+
+      navigateTo("/login");
+    } catch (error) {
+      const messageError = error.response?.data?.message || "";
+      console.log(messageError);
+
+      const code = error.response?.data?.data?.code;
+
+      if (code && code === "ER_DUP_ENTRY") {
+        toast.error("Registration failed. Duplicated data from another user" + messageError, {
+          toastId: "error",
+        });
+      } else {
+        toast.error("Registration failed. " + messageError, {
+          toastId: "error",
+        });
+      }
+     
+    }
   };
 
   const onInvalid = () => {
@@ -192,7 +227,10 @@ const RegisterPage = () => {
                 name={"password"}
                 aria-invalid={errors.password ? "true" : "false"}
                 innerRef={{
-                  ...register("password", { required: true, minLength: 8 }),
+                  ...register("password", {
+                    required: true,
+                    validate: validatePassword,
+                  }),
                 }}
                 validation={errors.password}
                 placeholder={"**********"}
@@ -204,10 +242,9 @@ const RegisterPage = () => {
                     className="ml-4 font-semibold text-red-400"
                     role="alert"
                   >
-                    {errors.password.type === "required" &&
-                      "This field is required."}
-                    {errors.password.type === "minLength" &&
-                      "Password length should be at least 8 characters."}
+                    {errors.password.type === "required"
+                      ? "This field is required."
+                      : errors.password.message}
                   </span>
                 )}
               </Input>

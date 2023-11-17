@@ -305,7 +305,9 @@ const RegisterPage = () => {
           </form>
         </div>
       </div>
-      <div className="h-full w-full bg-gray-400"></div>
+      <div className="h-full w-full bg-gray-400">
+        <div className="bg-hero-bg bg-center bg-cover bg-no-repeat w-full h-full"></div>
+      </div>
     </div>
   );
 };

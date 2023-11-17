@@ -7,6 +7,8 @@ import UsersPage from "./pages/UsersPage.jsx";
 import Unauthorized from "./pages/Unauthorized.jsx";
 import RequireLogin from "./components/RequireLogin.jsx";
 import RequireAuth from "./components/RequireAuth";
+import RedirectToLanding from "./components/RedirectToLanding";
+import LandingPage from "./pages/LandingPage";
 import { Routes, Route } from "react-router-dom";
 
 const ROLES = {
@@ -22,9 +24,10 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="/landing" element={<LandingPage />}></Route>
 
       {/* protected routes (only logged in users can access) */}
-      <Route element={<RequireLogin />}>
+      <Route element={<RedirectToLanding />}>
         <Route path="/" element={<HomePage />}></Route>
       </Route>
       <Route element={<RequireLogin />}>

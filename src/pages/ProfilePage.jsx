@@ -51,9 +51,18 @@ const ProfilePage = () => {
       } catch (error) {
         const messageError = error.response?.data?.message || "";
         console.log(messageError);
-        toast.error("Error while fetching profile. " + messageError, {
-          toastId: "error",
-        });
+        if (error.response?.data?.statusCode === 429) {
+          toast.error(
+            "You have exceeded the number of requests. Try again later.",
+            {
+              toastId: "error",
+            }
+          );
+        } else {
+          toast.error("Error while fetching profile. " + messageError, {
+            toastId: "error",
+          });
+        }
       }
     };
 
@@ -75,7 +84,6 @@ const ProfilePage = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log("DATA ", data);
     try {
       const response = await axiosPrivate.put(
         `/users/own`,
@@ -85,29 +93,29 @@ const ProfilePage = () => {
           password: data.password,
           phone: data.phone,
           birthdate: data.dob,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            withCredentials: true,
-          },
-        }
+        })
       );
 
       toast.success("User updated successfully.", {
         toastId: "success",
       });
 
-      console.log("AAAA ", response.data.data);
-      console.log("BBBB ", response.data.data);
       handleSaveEdit(response.data.data);
     } catch (error) {
       const messageError = error.response?.data?.message || "";
       console.log(messageError);
-      toast.error("Error while updating profile. " + messageError, {
-        toastId: "error",
-      });
-      
+      if (error.response?.data?.statusCode === 429) {
+        toast.error(
+          "You have exceeded the number of requests. Try again later.",
+          {
+            toastId: "error",
+          }
+        );
+      } else {
+        toast.error("Error while updating profile. " + messageError, {
+          toastId: "error",
+        });
+      }
     }
   };
 

@@ -24,13 +24,7 @@ const RegisterPage = () => {
           email: data.email,
           password: data.password,
           phone: data.phone,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            withCredentials: true,
-          },
-        }
+        })
       );
 
       toast.success("Registration successful! You can now log in.", {
@@ -45,15 +39,25 @@ const RegisterPage = () => {
       const code = error.response?.data?.data?.code;
 
       if (code && code === "ER_DUP_ENTRY") {
-        toast.error("Registration failed. Duplicated data from another user" + messageError, {
-          toastId: "error",
-        });
+        toast.error(
+          "Registration failed. Duplicated data from another user" +
+            messageError,
+          {
+            toastId: "error",
+          }
+        );
+      } else if (error.response?.data?.statusCode === 429) {
+        toast.error(
+          "You have exceeded the number of requests. Try again later.",
+          {
+            toastId: "error",
+          }
+        );
       } else {
         toast.error("Registration failed. " + messageError, {
           toastId: "error",
         });
       }
-     
     }
   };
 

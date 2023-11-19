@@ -54,13 +54,7 @@ const Comment = ({
         `/comments/own/${id}`,
         JSON.stringify({
           content: data.comment,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            withCredentials: true,
-          },
-        }
+        })
       );
 
       toast.success("Comment updated successfully.", {
@@ -74,9 +68,18 @@ const Comment = ({
     } catch (error) {
       const messageError = error.response?.data?.message || "";
       console.log(messageError);
-      toast.error("Error while updating comment. " + messageError, {
-        toastId: "error",
-      });
+      if (error.response?.data?.statusCode === 429) {
+        toast.error(
+          "You have exceeded the number of requests. Try again later.",
+          {
+            toastId: "error",
+          }
+        );
+      } else {
+        toast.error("Error while updating comment. " + messageError, {
+          toastId: "error",
+        });
+      }
     }
   };
 

@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import convertDate from "../utils/ConvertDate";
 
 const HomePage = () => {
-  const [comments, setComments] = useState();
+  const [comments, setComments] = useState([]);
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -27,8 +27,18 @@ const HomePage = () => {
         }
       } catch (error) {
         const messageError = error.response?.data?.message;
+        if (error.response?.data?.statusCode === 429) {
+          toast.error(
+            "You have exceeded the number of requests. Try again later.",
+            {
+              toastId: "error",
+            }
+          );
+        }
+
         if (messageError) {
           console.log(messageError);
+
           toast.error("Error while fetching comments. " + messageError, {
             toastId: "error",
           });
@@ -70,9 +80,18 @@ const HomePage = () => {
     } catch (error) {
       const messageError = error.response?.data?.message || "";
       console.log(messageError);
-      toast.error("Error while deleting comment. " + messageError, {
-        toastId: "error",
-      });
+      if (error.response?.data?.statusCode === 429) {
+        toast.error(
+          "You have exceeded the number of requests. Try again later.",
+          {
+            toastId: "error",
+          }
+        );
+      } else {
+        toast.error("Error while deleting comment. " + messageError, {
+          toastId: "error",
+        });
+      }
     }
   };
 

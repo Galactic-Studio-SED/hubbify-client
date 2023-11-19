@@ -21,9 +21,18 @@ const UsersPage = () => {
       } catch (error) {
         const messageError = error.response?.data?.message || "";
         console.log(messageError);
-        toast.error("Error while fetching users. " + messageError, {
-          toastId: "error",
-        });
+        if (error.response?.data?.statusCode === 429) {
+          toast.error(
+            "You have exceeded the number of requests. Try again later.",
+            {
+              toastId: "error",
+            }
+          );
+        } else {
+          toast.error("Error while fetching users. " + messageError, {
+            toastId: "error",
+          });
+        }
       }
     };
 
@@ -42,9 +51,18 @@ const UsersPage = () => {
     } catch (error) {
       const messageError = error.response?.data?.message || "";
       console.log(messageError);
-      toast.error("Error while deleting user. " + messageError, {
-        toastId: "error",
-      });
+      if (error.response?.data?.statusCode === 429) {
+        toast.error(
+          "You have exceeded the number of requests. Try again later.",
+          {
+            toastId: "error",
+          }
+        );
+      } else {
+        toast.error("Error while deleting user. " + messageError, {
+          toastId: "error",
+        });
+      }
     }
   };
 
@@ -74,12 +92,20 @@ const UsersPage = () => {
         })
       );
     } catch (error) {
-
       const messageError = error.response?.data?.message || "";
       console.log(messageError);
-      toast.error("Error while upgrading user. " + messageError, {
-        toastId: "error",
-      });
+      if (error.response?.data?.statusCode === 429) {
+        toast.error(
+          "You have exceeded the number of requests. Try again later.",
+          {
+            toastId: "error",
+          }
+        );
+      } else {
+        toast.error("Error while upgrading user. " + messageError, {
+          toastId: "error",
+        });
+      }
     }
   };
 

@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const LoginPage = () => {
+  const axiosPrivate = useAxiosPrivate();
   const { login } = useAuth();
   const navigateTo = useNavigate();
   const location = useLocation();
@@ -28,7 +30,6 @@ const LoginPage = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            withCredentials: true,
           },
         }
       );
@@ -47,9 +48,18 @@ const LoginPage = () => {
     } catch (error) {
       const messageError = error.response?.data?.message || "";
       console.log(messageError);
-      toast.error("Login failed. " + messageError, {
-        toastId: "error",
-      });
+      if (error.response?.data?.statusCode === 429) {
+        toast.error(
+          "You have exceeded the number of requests. Try again later.",
+          {
+            toastId: "error",
+          }
+        );
+      } else {
+        toast.error("Login failed. " + messageError, {
+          toastId: "error",
+        });
+      }
     }
   };
 
